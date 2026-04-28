@@ -1,5 +1,6 @@
 package dev.chrishful.career.builder.controller;
 
+import dev.chrishful.career.builder.dto.AgentResponse;
 import dev.chrishful.career.builder.dto.ChatRequest;
 import dev.chrishful.career.builder.dto.JobApplicationDto;
 import dev.chrishful.career.builder.service.ExcelService;
@@ -24,9 +25,8 @@ public class ChatController {
     }
 
     @PostMapping("/chat")
-    public ResponseEntity<String> chat(@RequestBody ChatRequest request) throws Exception {
-        String response = geminiService.chat(request.query());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<AgentResponse> chat(@RequestBody ChatRequest request) throws Exception {
+        return ResponseEntity.ok(geminiService.chat(request.query()));
     }
 
     @GetMapping("/get-applications")
