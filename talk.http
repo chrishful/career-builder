@@ -4,3 +4,6 @@ Content-Type: application/json
 {
   "query": "Explain how AI works in a few words"
 }
+
+###
+GET http://localhost:8080/v1/get-applications
