@@ -65,6 +65,7 @@ public class GeminiService {
             - decision: weighing options, should I do X or Y, trade-offs, choices
             - career: resume, job search, interviews, salary, applications, companies
             - motivational: feeling stuck, burnout, self-doubt, encouragement needed
+            - application: a request containing an email with confirmation of receipt, next steps, or follow-up
             - general: anything else
             
             Query: "%s"

@@ -7,3 +7,13 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/v1/get-applications
+
+###
+POST http://localhost:8080/v1/talk
+Content-Type: application/json
+
+{
+  "userId": "user-123",
+  "sessionId": "session-abc",
+  "message": "Hi Christopher, thanks for applying to the Senior Software Engineer - Pricing role at Upstart! We reviewed your application and will reach out if your skills align closely with the role. Feel free to set up job alerts on our Careers page for future opportunities. Best, Upstart Recruiting."
+}
