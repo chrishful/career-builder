@@ -134,7 +134,6 @@ public class DecisionAgentConfig {
         // Runs before the LLM is called.
         // Return Maybe.empty() to let the request proceed normally.
         // Return Maybe.just(response) to short-circuit and skip the LLM entirely.
-        System.out.println("BeforeModel callback triggered for decision agent");
         return Maybe.empty();
     }
 
