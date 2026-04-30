@@ -15,7 +15,6 @@ public class EmailService {
 
     private final InMemoryRunner runner;
 
-    // Inject the LlmAgent bean you already defined in DecisionAgentConfig
     public EmailService(LlmAgent decisionAgent) {
         this.runner = new InMemoryRunner(decisionAgent);
     }

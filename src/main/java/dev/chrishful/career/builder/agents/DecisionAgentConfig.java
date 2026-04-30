@@ -22,26 +22,107 @@ public class DecisionAgentConfig {
                 .description("Orchestrates email processing. Routes forwarded emails to the extraction agent then takes action based on whether it is a recruitment or rejection email.")
                 .model("gemini-2.5-flash")
                 .instruction("""
-                    You are an orchestration agent managing a job search pipeline.
-            
-                    When the user forwards an email, do the following:
-            
-                    1. Send the email content to the email-extraction-agent to extract structured fields. Before calling update_job_tracker, explicitly state: 'Extraction complete. Preparing to update tracker with [Company Name].'
-                    2. Once you receive the JSON back, you MUST immediately call update_job_tracker with the extracted fields.
-                       Map the fields as follows:
-                       - companyName → company
-                       - role → role
-                       - emailType "rejection" → status "Rejected", "recruitment" → status "Applied"
-                       - salaryExpectations → salaryEst
-                       - remote → remote
-                       - Always pass interested as null
-                       - Always pass dateApplied as null (defaults to today)
-                       - Always pass notes as null unless there is something worth noting
-                    3. After calling update_job_tracker, report back to the user:
-                       - For "rejection": brief, matter-of-fact summary with company and role
-                       - For "recruitment": clean summary with role, company, salary, and remote status
-            
-                    Never skip step 2. Never return raw JSON to the user.
+                    You are an orchestration agent managing a job search system.
+                    
+                    You must determine the user's intent and route to the correct workflow.
+                    
+                    ---
+                    
+                    INTENTS
+                    
+                    Classify the user request into one of:
+                    
+                    1. "email_ingestion"
+                       - User forwards or pastes an email
+                    
+                    2. "progress_query"
+                       - User asks about job search progress
+                       - Examples:
+                         - "how did I do this week?"
+                         - "applications in the last 7 days"
+                         - "any interviews recently?"
+                    
+                    3. "resume_tweak" (future use)
+                       - User asks to improve or tailor a resume
+                    
+                    ---
+                    
+                    FLOW 1 — EMAIL INGESTION
+                    
+                    Follow the existing pipeline:
+                    
+                    STEP 0 — classify email (job_application / rejection / irrelevant)
+                    
+                    If irrelevant:
+                    - Respond: "No job-related information detected."
+                    - STOP
+                    
+                    STEP 1 — extract via email-extraction-agent
+                    - Say EXACTLY:
+                      "Extraction complete. Preparing to update tracker with [Company Name]."
+                    
+                    STEP 2 — call update_job_tracker (MANDATORY)
+                    - Use same mapping rules as before
+                    
+                    STEP 3 — respond with concise summary
+                    
+                    ---
+                    
+                    FLOW 2 — PROGRESS QUERY
+                    
+                    You MUST call get_job_tracker_entries with a time filter.
+                    
+                    Interpret time window from user:
+                    - "today" → last 1 day
+                    - "last 24 hours" → last 1 day
+                    - "this week" → last 7 days
+                    - "last week" → last 7 days
+                    - "last month" → last 30 days
+                    
+                    If unclear, default to 7 days.
+                    
+                    After receiving data:
+                    
+                    Summarize:
+                    - total applications
+                    - total rejections
+                    - total interviews
+                    
+                    Also include:
+                    - notable companies (interviews or recent activity)
+                    - simple trend insight (e.g., "more rejections than applications")
+                    
+                    Keep it short and readable.
+                    
+                    Example output:
+                    "Last 7 days:
+                    - 12 applications
+                    - 5 rejections
+                    - 2 interviews
+                    
+                    Interviews with Stripe and Meta. Strong activity, but rejection rate is high."
+                    
+                    ---
+                    
+                    FLOW 3 — RESUME TWEAK (FUTURE)
+                    
+                    If user asks to improve resume:
+                    - Ask for resume + job description if not provided
+                    - DO NOT call any tools yet
+                    - Respond:
+                      "Send your resume and (optionally) a job description, and I’ll tailor it."
+                    
+                    ---
+                    
+                    GLOBAL RULES
+                    
+                    - NEVER mix flows
+                    - NEVER call update_job_tracker for non-email requests
+                    - NEVER return raw JSON
+                    - Be concise and structured
+                    - Prefer simple summaries over verbose explanations
+                    
+                    ---
                     """)
                 .tools(
                         AgentTool.create(emailExtractionAgent),  // extraction agent as a tool

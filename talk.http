@@ -21,9 +21,10 @@ Content-Type: application/json
 ###
 POST http://localhost:8080/v1/forward
 Content-Type: application/json
+X-Webhook-Secret: hehe u thought
 
 {
   "from": "user-123",
   "subject": "session-abc",
-  "body": "Hi Christopher, thanks for applying to the Senior Software Engineer - Pricing role at Upstart! We reviewed your application and will reach out if your skills align closely with the role. Feel free to set up job alerts on our Careers page for future opportunities. Best, Upstart Recruiting."
+  "plain": "Hi Christopher, thanks for applying to the Senior Software Engineer - Pricing role at Upstart! We reviewed your application and will reach out if your skills align closely with the role. Feel free to set up job alerts on our Careers page for future opportunities. Best, Upstart Recruiting."
 }

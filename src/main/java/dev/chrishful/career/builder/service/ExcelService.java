@@ -37,12 +37,12 @@ public class ExcelService {
                         (int) row.getCell(0).getNumericCellValue(),       // #
                         getString(row.getCell(1)),                         // Company
                         getString(row.getCell(2)),                         // Role
-                        getDate(row.getCell(3)),                           // Date Applied
+                        getString(row.getCell(3)),                           // Date Applied
                         getString(row.getCell(4)),                         // Status
                         getString(row.getCell(5)),                         // Interested?
                         getString(row.getCell(6)),                         // Salary Est.
                         "Yes".equalsIgnoreCase(getString(row.getCell(7))), // Remote?
-                        getDate(row.getCell(8)),                           // Last Updated
+                        getString(row.getCell(8)),                           // Last Updated
                         getString(row.getCell(9))                          // Notes
                 ));
             }

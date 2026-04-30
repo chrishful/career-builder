@@ -104,7 +104,7 @@ public class JobTrackerTool {
                 dto.interested(),
                 dto.salaryEstimate(),
                 dto.remote() ? "Yes" : "No",
-                dto.dateApplied() != null ? dto.dateApplied().format(DATE_FMT) : null,
+                dto.dateApplied(),
                 dto.notes()
         );
     }

@@ -6,11 +6,11 @@ public record JobApplicationDto(
         int number,
         String company,
         String role,
-        LocalDate dateApplied,
+        String dateApplied,
         String status,
         String interested,
         String salaryEstimate,
         boolean remote,
-        LocalDate lastUpdated,
+        String lastUpdated,
         String notes
 ) {}
