@@ -11,12 +11,15 @@ RUN ./mvnw package -DskipTests -q
 FROM eclipse-temurin:21-jre-alpine AS runtime
 WORKDIR /app
 
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring
+FROM gcr.io/distroless/java21-debian12 AS runtime
+WORKDIR /app
 
 COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=45s --retries=3 \
+  CMD wget -qO- http://localhost:8080/actuator/health || exit 1
 
 ENTRYPOINT ["java", \
   "-XX:+UseContainerSupport", \
