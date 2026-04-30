@@ -23,7 +23,6 @@ public class EmailService {
     public String forward(EmailRequest email) {
         String userId = "email-forwarder";
 
-        // Create a fresh session per email (or persist one if you want conversation history)
         Session session = runner.sessionService()
                 .createSession(runner.appName(), userId)
                 .blockingGet();
