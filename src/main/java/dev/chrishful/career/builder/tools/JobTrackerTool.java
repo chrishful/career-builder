@@ -2,6 +2,7 @@ package dev.chrishful.career.builder.tools;
 
 import com.google.adk.tools.Annotations.Schema;
 import com.google.adk.tools.FunctionTool;
+import dev.chrishful.career.builder.dto.JobApplicationDto;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Component;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 
 @Component
@@ -56,8 +59,7 @@ public class JobTrackerTool {
              Workbook wb = new XSSFWorkbook(fis)) {
 
             Sheet sheet = wb.getSheetAt(0);
-            String today = LocalDate.now().format(DATE_FMT);
-            String appliedDate = (dateApplied != null && !dateApplied.isBlank()) ? dateApplied : today;
+            Date today = Date.from(Instant.from(Instant.now()));
 
             Row targetRow = findRowByCompany(sheet, company);
             boolean isNew = (targetRow == null);
@@ -66,8 +68,8 @@ public class JobTrackerTool {
                 int nextRowIdx = findNextEmptyRow(sheet);
                 targetRow = sheet.createRow(nextRowIdx);
                 int rowNum = nextRowIdx - DATA_START_ROW + 1;
-                setCell(targetRow, COL_NUM, String.valueOf(rowNum));
-                setCell(targetRow, COL_DATE_APP, appliedDate);
+                setCell(targetRow, COL_NUM, rowNum);
+                setCell(targetRow, COL_DATE_APP, today);
             }
 
             setCell(targetRow, COL_COMPANY, company);
@@ -92,6 +94,19 @@ public class JobTrackerTool {
         } catch (IOException e) {
             return Map.of("status", "error", "message", e.getMessage());
         }
+    }
+
+    public void updateJobTracker(JobApplicationDto dto) {
+        updateJobTracker(
+                dto.company(),
+                dto.role(),
+                dto.status(),
+                dto.interested(),
+                dto.salaryEstimate(),
+                dto.remote() ? "Yes" : "No",
+                dto.dateApplied() != null ? dto.dateApplied().format(DATE_FMT) : null,
+                dto.notes()
+        );
     }
 
     // Call this to get a FunctionTool the agent can use
@@ -137,5 +152,17 @@ public class JobTrackerTool {
         Cell cell = row.getCell(colIdx);
         if (cell == null) cell = row.createCell(colIdx);
         cell.setCellValue(value != null ? value : "");
+    }
+
+    private void setCell(Row row, int colIdx, int value) {
+        Cell cell = row.getCell(colIdx);
+        if (cell == null) cell = row.createCell(colIdx);
+        cell.setCellValue(value);
+    }
+
+    private void setCell(Row row, int colIdx, Date value) {
+        Cell cell = row.getCell(colIdx);
+        if (cell == null) cell = row.createCell(colIdx);
+        cell.setCellValue(value);
     }
 }

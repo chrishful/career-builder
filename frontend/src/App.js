@@ -112,22 +112,19 @@ function Chat() {
     setMessages(m => [...m, { role: "user", text: q }, { role: "thinking", text: "thinking..." }]);
     setLoading(true);
     try {
-      const res = await fetch("/v1/talk", {
+      const res = await fetch("/v1/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: "user-123",
-          sessionId: "session-abc",
-          message: q
-        }),
+        body: JSON.stringify({ query: q }),
       });
-      const text = await res.text();
-      setMessages(m => [...m.slice(0, -1), { role: "assistant", text }]);
+      const data = await res.json();
+      setMessages(m => [...m.slice(0, -1), { role: "assistant", text: data.text, agent: data.agent }]);
     } catch {
-      setMessages(m => [...m.slice(0, -1), { role: "assistant", text: "error reaching /v1/talk" }]);
+      setMessages(m => [...m.slice(0, -1), { role: "assistant", text: "error reaching /v1/chat" }]);
     }
     setLoading(false);
   }
+
   return (
     <div style={{ background: "#fff", border: "0.5px solid rgba(0,0,0,0.1)", borderRadius: 12, display: "flex", flexDirection: "column", minHeight: 460, overflow: "hidden" }}>
       <div style={{ flex: 1, overflowY: "auto", padding: 16, display: "flex", flexDirection: "column", gap: 10 }}>
