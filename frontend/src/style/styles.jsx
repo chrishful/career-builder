@@ -1,0 +1,271 @@
+// ==========================================
+// CSS STYLESHEET
+// ==========================================
+export const styles = {
+      dropdownOption: {
+        backgroundColor: '#09090b', // Force fallback matching your dark canvas
+        color: '#fafafa',
+        padding: '8px'
+      },
+  appContainer: {
+    backgroundColor: '#09090b',
+    color: '#fafafa',
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    minHeight: '100vh',
+    padding: '24px',
+    boxSizing: 'border-box',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '24px',
+  },
+  logo: {
+    fontSize: '24px',
+    fontWeight: '700',
+    color: '#fafafa',
+  },
+  logoAccent: {
+    color: '#ea580c',
+  },
+  tagline: {
+    fontSize: '12px',
+    color: '#52525b',
+    letterSpacing: '1px',
+  },
+  mainContent: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 320px',
+    gap: '24px',
+  },
+  leftColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '24px',
+  },
+  metricsGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: '16px',
+  },
+  metricCard: {
+    backgroundColor: '#18181b',
+    border: '1px solid #27272a',
+    borderRadius: '8px',
+    padding: '16px 20px',
+  },
+  metricCardActive: {
+    borderColor: '#4c1d95',
+  },
+  metricNumber: {
+    fontSize: '36px',
+    fontWeight: '700',
+    lineHeight: '1',
+    marginBottom: '4px',
+  },
+  metricLabel: {
+    fontSize: '10px',
+    fontWeight: '600',
+    color: '#71717a',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+  },
+  tableContainer: {
+    backgroundColor: '#18181b',
+    border: '1px solid #27272a',
+    borderRadius: '8px',
+    padding: '24px',
+  },
+  tableHeaderActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '20px',
+  },
+  tableTitle: {
+    fontSize: '11px',
+    fontWeight: '600',
+    color: '#71717a',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+  },
+  filterGroup: {
+    display: 'flex',
+    gap: '8px',
+    backgroundColor: '#09090b',
+    padding: '4px',
+    borderRadius: '6px',
+    border: '1px solid #27272a',
+  },
+  filterBtn: {
+    background: 'none',
+    border: 'none',
+    color: '#71717a',
+    padding: '4px 12px',
+    borderRadius: '4px',
+    fontSize: '12px',
+    cursor: 'pointer',
+    transition: 'all 0.2s',
+  },
+  filterBtnActive: {
+    backgroundColor: '#18181b',
+    color: '#ea580c',
+    border: '1px solid #27272a',
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+    textAlign: 'left',
+  },
+  th: {
+    fontSize: '10px',
+    fontWeight: '600',
+    color: '#52525b',
+    textTransform: 'uppercase',
+    letterSpacing: '0.5px',
+    paddingBottom: '16px',
+    borderBottom: '1px solid #27272a',
+  },
+  td: {
+    padding: '16px 0',
+    fontSize: '13px',
+    borderBottom: '1px solid #222226',
+    verticalAlign: 'middle',
+  },
+  companyName: {
+    fontWeight: '600',
+    color: '#fafafa',
+  },
+  roleName: {
+    color: '#a1a1aa',
+  },
+  dateText: {
+    color: '#71717a',
+  },
+  statusBadge: {
+    display: 'inline-block',
+    padding: '4px 8px',
+    borderRadius: '12px',
+    fontSize: '11px',
+    fontWeight: '600',
+    textAlign: 'center',
+    textTransform: 'lowercase',
+  },
+  statusInterview: {
+    backgroundColor: '#2e1065',
+    color: '#c084fc',
+  },
+  statusApplied: {
+    backgroundColor: '#451a03',
+    color: '#fb923c',
+  },
+  statusRejected: {
+    backgroundColor: '#450a0a',
+    color: '#f87171',
+  },
+  sidebar: {
+    backgroundColor: '#18181b',
+    border: '1px solid #27272a',
+    borderRadius: '8px',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'calc(100vh - 120px)',
+    position: 'relative',
+  },
+  sidebarHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontSize: '11px',
+    fontWeight: '600',
+    color: '#71717a',
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    marginBottom: '20px',
+  },
+  sidebarDot: {
+    width: '6px',
+    height: '6px',
+    borderRadius: '50%',
+    backgroundColor: '#ea580c',
+  },
+  chatBubble: {
+    backgroundColor: '#09090b',
+    border: '1px solid #27272a',
+    borderRadius: '8px',
+    padding: '12px 16px',
+    color: '#a1a1aa',
+    fontSize: '13px',
+    lineHeight: '1.5',
+  },
+  chatInputContainer: {
+    position: 'absolute',
+    bottom: '20px',
+    left: '20px',
+    right: '20px',
+    display: 'flex',
+    gap: '8px',
+    backgroundColor: '#09090b',
+    border: '1px solid #27272a',
+    borderRadius: '6px',
+    padding: '4px',
+  },
+  chatInput: {
+    flex: '1',
+    background: 'none',
+    border: 'none',
+    color: '#fafafa',
+    padding: '8px 12px',
+    fontSize: '13px',
+    outline: 'none',
+  },
+  chatSubmitBtn: {
+    backgroundColor: '#451a03',
+    color: '#fb923c',
+    border: '1px solid #27272a',
+    padding: '0 16px',
+    borderRadius: '4px',
+    fontSize: '12px',
+    cursor: 'pointer',
+  },
+  stateMessage: {
+    color: '#71717a',
+    fontSize: '14px',
+    textAlign: 'center',
+    padding: '40px 0',
+  },
+  td: {
+      padding: '12px 16px',
+      fontSize: '14px',
+      color: '#cbd5e1',
+      borderBottom: '1px solid #1e293b'
+    },
+    notesCell: {
+      color: '#94a3b8',
+      maxWidth: '240px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    },
+    deleteButton: {
+      position: 'absolute',
+      right: '12px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      background: 'none',
+      border: 'none',
+      color: 'red',
+      cursor: 'pointer',
+      padding: '6px',
+      borderRadius: '4px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'opacity 0.2s ease, color 0.15s ease, background-color 0.15s ease',
+      // Hover styles applied via regular css if preferred, or standard :hover mechanics
+      ':hover': { color: '#f87171', backgroundColor: '#ef444415' }
+    }
+
+};

@@ -34,6 +34,7 @@ public class ExcelService {
                 if (firstCell == null || firstCell.getCellType() == CellType.BLANK) continue;
 
                 applications.add(new JobApplicationDto(
+                        null,
                         (int) row.getCell(0).getNumericCellValue(),       // #
                         getString(row.getCell(1)),                         // Company
                         getString(row.getCell(2)),                         // Role

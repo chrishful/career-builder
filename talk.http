@@ -26,5 +26,22 @@ X-Webhook-Secret: hehe u thought
 {
   "from": "user-123",
   "subject": "session-abc",
-  "plain": "Hi Christopher, thanks for applying to the Senior Software Engineer - Pricing role at Upstart! We reviewed your application and will reach out if your skills align closely with the role. Feel free to set up job alerts on our Careers page for future opportunities. Best, Upstart Recruiting."
+  "plain": "Hi Christopher, thanks for applying to the Senior Software Engineer - Pricing role at Upstart! Thank you so much for submitting your applicaiton, we will review your application and will reach out if your skills align closely with the role. Feel free to set up job alerts on our Careers page for future opportunities. Best, Upstart Recruiting."
+}
+
+### Create a New Job Application
+POST http://localhost:8080/v1/applications
+Content-Type: application/json
+
+{
+  "number": 0,
+  "company": "TEST_COMPANY",
+  "role": "Software Engineer II",
+  "dateApplied": "May 27",
+  "status": "Applied",
+  "interested": "YES",
+  "salaryEstimate": "$140k-$160k",
+  "remote": true,
+  "lastUpdated": "",
+  "notes": "Testing the brand new Supabase connection backend implementation."
 }
