@@ -127,12 +127,6 @@ export const styles = {
     paddingBottom: '16px',
     borderBottom: '1px solid #27272a',
   },
-  td: {
-    padding: '16px 0',
-    fontSize: '13px',
-    borderBottom: '1px solid #222226',
-    verticalAlign: 'middle',
-  },
   companyName: {
     fontWeight: '600',
     color: '#fafafa',

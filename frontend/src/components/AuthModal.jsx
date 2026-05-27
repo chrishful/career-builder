@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
-import { styles } from '../style/styles';
-
 
 export default function AuthModal() {
   const [email, setEmail] = useState('');
