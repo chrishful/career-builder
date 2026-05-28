@@ -11,76 +11,77 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const handleStatusChange = async (id, nextStatus) => {
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
+
+const handleStatusChange = async (id, nextStatus) => {
+  const token = await getSessionToken();
+  try {
+    const response = await fetch(`${backendUrl}/v1/applications/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify({ status: nextStatus }),
+    });
+
+    // Explicitly handle server errors
+    if (!response.ok) {
+      throw new Error(`Server returned status code ${response.status}`);
+    }
+
+    setApplications(prevApps =>
+      prevApps.map(app => app.id === id ? { ...app, status: nextStatus } : app)
+    );
+  } catch (error) {
+    console.error('Network failure executing patch:', error);
+    // TODO: Alert user in the UI
+  }
+};
+
+const handleDelete = async (id) => {
+  const token = await getSessionToken();
+  try {
+    const response = await fetch(`${backendUrl}/v1/applications/${id}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Basic ${token}` }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server returned status code ${response.status}`);
+    }
+
+    setApplications(prevApps => prevApps.filter(app => app.id !== id));
+  } catch (error) {
+    console.error('Failed processing delete operational flow:', error);
+    // TODO: Alert user in the UI
+  }
+};
+
+useEffect(() => {
+  const loadInitialData = async () => {
     const token = await getSessionToken();
+    if (!token) return;
+
     try {
-      const response = await fetch(`/v1/applications/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: nextStatus }),
+      // Fixed: Removed the ghost 'id' to pull the entire collection for your list view
+      const res = await fetch(`${backendUrl}/v1/applications`, {
+        headers: { 'Authorization': `Basic ${token}` }
       });
 
-      if (response.ok) {
-        setApplications(prevApps =>
-          prevApps.map(app => app.id === id ? { ...app, status: nextStatus } : app)
-        );
-      }
-    } catch (error) {
-      console.error('Network failure executing patch:', error);
+      if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
+
+      const data = await res.json();
+      setApplications(data);
+    } catch (err) {
+      console.error('Data pull metrics crash:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    const token = await getSessionToken();
-    try {
-      const response = await fetch(`/v1/applications/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        setApplications(prevApps => prevApps.filter(app => app.id !== id));
-      }
-    } catch (error) {
-      console.error('Failed processing delete operational flow:', error);
-    }
-  };
-
-  useEffect(() => {
-    const loadInitialData = async () => {
-      const token = await getSessionToken();
-      if (!token) return; // Keep loading visible or wait till overlay unlocks
-
-      try {
-        const res = await fetch('/v1/applications', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('Network execution error');
-        const data = await res.json();
-        setApplications(data);
-        setFilteredApplications(data);
-      } catch (err) {
-        console.error('Data pull metrics crash:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, []);
-
-  useEffect(() => {
-    if (activeFilter === 'all') {
-      setFilteredApplications(applications);
-    } else {
-      setFilteredApplications(
-        applications.filter(app => app.status && app.status.toLowerCase() === activeFilter)
-      );
-    }
-  }, [activeFilter, applications]);
+  loadInitialData();
+}, []); // Empty array is fine now since we are fetching global collection on mount
 
   const totalApplied = applications.length;
   const activeCount = applications.filter(app => app.status && ['applied', 'interview'].includes(app.status.toLowerCase())).length;
