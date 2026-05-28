@@ -5,12 +5,12 @@ import ChatSidebar from './ChatSidebar';
 import { getSessionToken } from '../supabaseClient';
 import { styles } from '../style/styles';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
+
 export default function Dashboard() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
-
-const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
 
 const filteredApplications = activeFilter === 'all'
   ? applications
