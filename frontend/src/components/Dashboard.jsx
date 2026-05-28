@@ -7,11 +7,14 @@ import { styles } from '../style/styles';
 
 export default function Dashboard() {
   const [applications, setApplications] = useState([]);
-  const [filteredApplications, setFilteredApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
+
+const filteredApplications = activeFilter === 'all'
+  ? applications
+  : applications.filter(app => app.status?.toLowerCase() === activeFilter.toLowerCase());
 
 const handleStatusChange = async (id, nextStatus) => {
   const token = await getSessionToken();
