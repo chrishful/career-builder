@@ -30,7 +30,7 @@ public class JobTrackerTool {
     public Map<String, String> updateJobTracker(
             @Schema(description = "Company name") String company,
             @Schema(description = "Job title / role") String role,
-            @Schema(description = "Status: Applied, Rejected, Phone Screen, First Interview, Withdrawn") String status,
+            @Schema(description = "Status: Applied, Rejected, Phone Screen, Interview, Withdrawn") String status,
             @Schema(description = "Interest level: YES, No, Maybe. Null if unknown.") String interested,
             @Schema(description = "Salary estimate e.g. '$130k-160k'. Null if unknown.") String salaryEst,
             @Schema(description = "Remote: Yes, No, or null if unknown.") String remote,
