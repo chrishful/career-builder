@@ -84,7 +84,7 @@ useEffect(() => {
   };
 
   loadInitialData();
-}, []); // Empty array is fine now since we are fetching global collection on mount
+}, []);
 
   const totalApplied = applications.length;
   const activeCount = applications.filter(app => app.status && ['applied', 'interview'].includes(app.status.toLowerCase())).length;
