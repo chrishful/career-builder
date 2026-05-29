@@ -14,7 +14,7 @@ public class GlobalCorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://career-builder-8ka2.onrender.com", "http://localhost:3000","https://career-builder-taupe.vercel.app")
+                        .allowedOrigins("https://career-builder-8ka2.onrender.com", "http://localhost:3000","http://localhost:3001","https://career-builder-taupe.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

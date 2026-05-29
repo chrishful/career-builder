@@ -2,11 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from '../style/styles.module.css';
 import { getSessionToken } from '../supabaseClient';
 
-
-
-// const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
-const backendUrl = 'http://localhost:8080';
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
+// const backendUrl = 'http://localhost:8080';
 
 export default function ChatSidebar() {
   const [messages, setMessages] = useState([

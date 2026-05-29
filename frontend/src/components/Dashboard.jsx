@@ -4,6 +4,12 @@ import MetricCard from './MetricCard';
 import ChatSidebar from './ChatSidebar';
 import { getSessionToken } from '../supabaseClient';
 import styles from '../style/styles.module.css';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.REACT_APP_SUPABASE_URL,
+  process.env.REACT_APP_SUPABASE_ANON_KEY
+);
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
 
@@ -16,6 +22,30 @@ export default function Dashboard() {
   const filteredApplications = activeFilter === 'all'
     ? applications
     : applications.filter(app => app.status?.toLowerCase() === activeFilter.toLowerCase());
+
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('applications-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'applications' },
+        (payload) => {
+          if (payload.eventType === 'INSERT') {
+            setApplications(prev => [...prev, payload.new]);
+          } else if (payload.eventType === 'UPDATE') {
+            setApplications(prev =>
+              prev.map(app => app.id === payload.new.id ? payload.new : app)
+            );
+          } else if (payload.eventType === 'DELETE') {
+            setApplications(prev => prev.filter(app => app.id !== payload.old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => supabase.removeChannel(channel);
+  }, []);
 
   const handleStatusChange = async (id, nextStatus) => {
     const token = await getSessionToken();
