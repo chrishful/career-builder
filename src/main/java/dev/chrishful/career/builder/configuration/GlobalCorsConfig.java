@@ -19,7 +19,8 @@ public class GlobalCorsConfig {
                                 "https://*-chrishfuls-projects.vercel.app",
                                 "https://career-builder-*.vercel.app",
                                 "http://localhost:[3000,3001]"
-                        )                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+                        )
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }

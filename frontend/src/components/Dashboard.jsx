@@ -71,6 +71,28 @@ export default function Dashboard() {
     }
   };
 
+    const handleNotesChange = async (id, nextNotes) => {
+      const token = await getSessionToken();
+      try {
+        const response = await fetch(`${backendUrl}/v1/application/${id}`, {
+          method: 'PATCH',
+          headers: {
+              'Content-Type': 'application/json',
+               'Authorization': `Basic ${token}`},
+          body: JSON.stringify({ nextNotes }),
+        });
+      if (!response.ok) {
+        throw new Error(`Server returned status code ${response.status}`);
+      }
+        setApplications(prevApps =>
+          prevApps.map(app => app.id === id ? { ...app, notes: nextNotes } : app)
+        );
+      } catch (error) {
+        console.error("Failed to update notes", error);
+      }
+  };
+
+
   const handleDelete = async (id) => {
     const token = await getSessionToken();
     try {
@@ -130,7 +152,7 @@ export default function Dashboard() {
           <div className={styles.metricsGrid}>
             <MetricCard count={totalApplied} label="Applied" />
             <MetricCard count={activeCount} label="Active" />
-            <MetricCard count={inProgressCount} label="In Progress" isActiveTrack={true} />
+            <MetricCard count={inProgressCount} label="Interview"  />
             <MetricCard count={rejectedCount} label="Rejected" />
           </div>
 
@@ -173,6 +195,7 @@ export default function Dashboard() {
                         app={app}
                         onDelete={handleDelete}
                         onStatusChange={handleStatusChange}
+                        onNotesChange={handleNotesChange}
                       />
                     ))}
                   </tbody>

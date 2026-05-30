@@ -2,9 +2,8 @@ package dev.chrishful.career.builder.controller;
 
 import dev.chrishful.career.builder.dto.JobApplicationDto;
 import dev.chrishful.career.builder.dto.JobApplicationResponseDto;
-import dev.chrishful.career.builder.dto.StatusUpdateRequestDto;
+import dev.chrishful.career.builder.dto.UpdateApplicationEntryDto;
 import dev.chrishful.career.builder.service.DatabaseService;
-import dev.chrishful.career.builder.service.GeminiService;
 import dev.chrishful.career.builder.tools.JobTrackerTool;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,12 +72,11 @@ public class ChatController {
     }
 
     @PatchMapping("/applications/{id}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Void> updateStatus(
+    public ResponseEntity<Void> update(
             @PathVariable UUID id,
-            @RequestBody StatusUpdateRequestDto request) {
+            @RequestBody UpdateApplicationEntryDto request) {
         try {
-            boolean updated = databaseService.updateApplicationStatus(id, request.status());
+            boolean updated = databaseService.updateApplication(id, request);
             return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
         } catch (Exception e) {
             System.err.println("Failed to update status: " + e.getMessage());

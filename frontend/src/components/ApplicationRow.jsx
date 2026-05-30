@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../style/styles.module.css';
 
-export default function ApplicationRow({ app, onDelete, onStatusChange }) {
+export default function ApplicationRow({ app, onDelete, onStatusChange, onNotesChange }) {
   const statusKey = app.status ? app.status.toLowerCase() : 'applied';
 
   const statusBadgeClass = {
@@ -12,6 +12,10 @@ export default function ApplicationRow({ app, onDelete, onStatusChange }) {
 
   const handleSelectChange = (e) => {
     onStatusChange(app.id, e.target.value);
+  };
+
+  const handleNotesChange = (e) => {
+    onNotesChange(app.id, e.target.value);
   };
 
   return (
@@ -34,7 +38,7 @@ export default function ApplicationRow({ app, onDelete, onStatusChange }) {
       <td className={`${styles.td} ${styles.dateText}`}>{app.dateApplied || 'N/A'}</td>
 
       <td className={`${styles.td} ${styles.notesCell}`}>
-        <span>{app.notes || '—'}</span>
+        <span className={`${styles.notesCell}`}>{app.notes || '—'}</span>
         <button
           onClick={() => onDelete(app.id)}
           className={styles.deleteButton}

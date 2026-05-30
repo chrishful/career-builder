@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import dev.chrishful.career.builder.dto.JobApplicationDto;
 import dev.chrishful.career.builder.dto.JobApplicationResponseDto;
+import dev.chrishful.career.builder.dto.UpdateApplicationEntryDto;
 import org.springframework.stereotype.Service;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -84,9 +85,19 @@ public class DatabaseService {
         return rowsAffected > 0;
     }
 
+    public boolean updateApplication(UUID id, UpdateApplicationEntryDto update) {
+        if (update != null && update.status() != null && !update.status().isEmpty()){
+            return updateApplicationStatus(id, update.status());
+        }
+        if (update != null && update.notes()!= null && !update.notes().isEmpty()){
+            return updateApplicationNotes(id, update.notes());
+        }
+        return false;
+    }
+
     public boolean updateApplicationStatus(UUID id, String newStatus) {
         String sql = """
-        UPDATE applications 
+        UPDATE applications
         SET status = :status,
             last_updated = CURRENT_TIMESTAMP
         WHERE id = :id::uuid
@@ -94,6 +105,22 @@ public class DatabaseService {
 
         int rowsAffected = jdbcClient.sql(sql)
                 .param("status", newStatus)
+                .param("id", id)
+                .update();
+
+        return rowsAffected > 0;
+    }
+
+    public boolean updateApplicationNotes(UUID id, String newNotes) {
+        String sql = """
+            UPDATE applications
+            SET notes = :notes,
+                last_updated = CURRENT_TIMESTAMP
+            WHERE id = :id::uuid
+        """;
+
+        int rowsAffected = jdbcClient.sql(sql)
+                .param("notes", newNotes)
                 .param("id", id)
                 .update();
 

@@ -5,6 +5,7 @@ import com.google.adk.agents.LlmAgent;
 import com.google.adk.models.LlmRequest;
 import com.google.adk.models.LlmResponse;
 import com.google.adk.tools.AgentTool;
+import dev.chrishful.career.builder.tools.JobStatusTool;
 import dev.chrishful.career.builder.tools.JobTrackerTool;
 import io.reactivex.rxjava3.core.Maybe;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,7 @@ import java.util.List;
 public class DecisionAgentConfig {
 
         @Bean("decisionAgent")
-        public LlmAgent buildDecisionAgent(LlmAgent emailExtractionAgent, JobTrackerTool jobTrackerTool) {
+        public LlmAgent buildDecisionAgent(LlmAgent emailExtractionAgent, JobTrackerTool jobTrackerTool, JobStatusTool jobStatusTool) {
             return LlmAgent.builder()
                     .name("decision-agent")
                     .description("Orchestrates database pipeline updates. Routes emails to extraction tool then syncs data onto the Supabase tracking schema.")
@@ -56,19 +57,30 @@ public class DecisionAgentConfig {
                     
                     FLOW 2 — PROGRESS QUERY
                     
-                    You MUST call the 'get_job_tracker_entries' tool using an inferred lookback integer token window:
-                    - "today" / "last 24 hours" -> lookbackDays: 1
-                    - "this week" / "last week"  -> lookbackDays: 7
-                    - "last month"               -> lookbackDays: 30
+                    Triggered by questions like: "how am I doing this week?", "how many applications have I sent?",
+                    "any rejections lately?", "are there open apps going quiet?"
                     
-                    Default to 7 days if unbounded or generic.
+                    Route to the appropriate tool based on intent:
                     
-                    Process the returned records to compute metric metrics summaries:
-                    - Sum aggregate occurrences of "Applied", "Interview", and "Rejected" statuses.
-                    - Highlight specific corporate tracking targets encountered during that processing timeframe.
+                    | Question type                        | Tool                       | Default lookbackDays |
+                    |--------------------------------------|----------------------------|----------------------|
+                    | Overall summary / "how am I doing"   | get_job_hunt_summary        | 7                    |
+                    | Count of applications sent           | get_application_count       | 30                   |
+                    | Rejection count or rejection rate    | get_rejection_count         | 30                   |
+                    | Stale / quiet / no-response apps     | get_stalled_applications    | 30 (staleDays param) |
                     
-                    Return a concise, clean summary report without printing raw system JSON blocks.
+                    Infer the lookback window from the user's phrasing:
+                    - "today" / "last 24 hours" → 1
+                    - "this week"               → 7
+                    - "this month" / "lately"   → 30
+                    - "all time" / no qualifier on summary questions → 0
+                    - Stalled app questions with no qualifier → default staleDaysThreshold: 30
                     
+                    You may call multiple tools in one turn if the question spans topics
+                    (e.g. "how many apps and how many rejections this month?" → call both).
+                    
+                    Present results as a clean, conversational summary. Do not print raw JSON.
+                    Highlight any companies in "Interview" status. Flag stalled apps by name.
                     ---
                     GLOBAL RULES
                     - NEVER call database update operations for pure progress metric queries.
@@ -76,8 +88,11 @@ public class DecisionAgentConfig {
                     - Keep conversational output concise, readable, and structured.
                     """)
                     .tools(
-                            AgentTool.create(emailExtractionAgent),
-                            jobTrackerTool.asTool()
+                            jobTrackerTool.asTool(),
+                            jobStatusTool.summaryTool(),
+                            jobStatusTool.applicationCountTool(),
+                            jobStatusTool.rejectionCountTool(),
+                            jobStatusTool.stalledApplicationsTool()
                     )
                     .build();
         }
