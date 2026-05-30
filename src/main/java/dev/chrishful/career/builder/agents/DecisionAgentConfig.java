@@ -90,7 +90,7 @@ public class DecisionAgentConfig {
                     .tools(
                             jobTrackerTool.asTool(),
                             jobStatusTool.summaryTool(),
-                            jobStatusTool.applicationCountTool(),
+                            jobStatusTool.applicationsTool(),
                             jobStatusTool.rejectionCountTool(),
                             jobStatusTool.stalledApplicationsTool()
                     )

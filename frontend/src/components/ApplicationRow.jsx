@@ -14,10 +14,6 @@ export default function ApplicationRow({ app, onDelete, onStatusChange, onNotesC
     onStatusChange(app.id, e.target.value);
   };
 
-  const handleNotesChange = (e) => {
-    onNotesChange(app.id, e.target.value);
-  };
-
   return (
     <tr className={styles.tableRow}>
       <td className={`${styles.td} ${styles.companyName}`}>{app.company || 'Unknown'}</td>

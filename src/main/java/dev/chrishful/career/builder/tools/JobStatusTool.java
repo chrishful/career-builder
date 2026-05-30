@@ -60,20 +60,35 @@ public class JobStatusTool {
         return result;
     }
 
-    // ── 2. Application count ──────────────────────────────────────────────────
+// ── 2. Applications  ──────────────────────────────────────────────────
 
     @Schema(description = """
-            Returns the number of job applications submitted within the lookback window.
-            Use for questions like "how many applications have I sent this month?"
-            """)
-    public Map<String, Object> getApplicationCount(
+        Returns all job applications submitted within the lookback window, including
+        company, role, status, date applied, and whether remote.
+        Use for questions like "how many applications have I sent this month?",
+        "who did I apply to this week?", "what roles have I applied for lately?"
+        """)
+    public Map<String, Object> getApplications(
             @Schema(description = "Lookback window in days (7 = this week, 30 = this month, 0 = all time)") int lookbackDays
     ) {
         List<JobApplicationDto> apps = getFiltered(lookbackDays);
 
+        List<Map<String, String>> records = apps.stream()
+                .map(a -> {
+                    Map<String, String> entry = new LinkedHashMap<>();
+                    entry.put("company", a.company());
+                    entry.put("role", a.role());
+                    entry.put("status", a.status());
+                    entry.put("dateApplied", a.dateApplied());
+                    entry.put("remote", a.remote() ? "Yes" : "No");
+                    return entry;
+                })
+                .collect(Collectors.toList());
+
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("lookbackDays", lookbackDays == 0 ? "all time" : lookbackDays + " days");
         result.put("applicationCount", apps.size());
+        result.put("applications", records);
         return result;
     }
 
@@ -136,7 +151,7 @@ public class JobStatusTool {
         return FunctionTool.create(this, "getJobHuntSummary");
     }
 
-    public FunctionTool applicationCountTool() {
+    public FunctionTool applicationsTool() {
         return FunctionTool.create(this, "getApplicationCount");
     }
 
