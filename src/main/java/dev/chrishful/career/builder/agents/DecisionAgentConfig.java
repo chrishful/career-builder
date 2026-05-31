@@ -65,7 +65,7 @@ public class DecisionAgentConfig {
                     | Question type                        | Tool                       | Default lookbackDays |
                     |--------------------------------------|----------------------------|----------------------|
                     | Overall summary / "how am I doing"   | get_job_hunt_summary        | 7                    |
-                    | Count of applications sent           | get_application_count       | 30                   |
+                    | Count of applications sent           | get_application             | 30                   |
                     | Rejection count or rejection rate    | get_rejection_count         | 30                   |
                     | Stale / quiet / no-response apps     | get_stalled_applications    | 30 (staleDays param) |
                     

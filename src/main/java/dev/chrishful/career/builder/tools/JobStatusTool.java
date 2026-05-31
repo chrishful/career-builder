@@ -152,7 +152,7 @@ public class JobStatusTool {
     }
 
     public FunctionTool applicationsTool() {
-        return FunctionTool.create(this, "getApplicationCount");
+        return FunctionTool.create(this, "getApplications");
     }
 
     public FunctionTool rejectionCountTool() {
