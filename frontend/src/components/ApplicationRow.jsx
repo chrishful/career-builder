@@ -31,7 +31,7 @@ export default function ApplicationRow({ app, onDelete, onStatusChange, onNotesC
         </select>
       </td>
 
-      <td className={`${styles.td} ${styles.dateText}`}>{app.dateApplied || 'N/A'}</td>
+      <td className={`${styles.td} ${styles.dateText}`}>{app.lastUpdated || 'N/A'}</td>
 
       <td className={`${styles.td} ${styles.notesCell}`}>
         <span className={`${styles.notesCell}`}>{app.notes || '—'}</span>

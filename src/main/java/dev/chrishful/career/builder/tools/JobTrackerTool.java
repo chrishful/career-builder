@@ -33,7 +33,7 @@ public class JobTrackerTool {
             @Schema(description = "Status: Applied, Rejected, Phone Screen, Interview, Withdrawn") String status,
             @Schema(description = "Interest level: YES, No, Maybe. Null if unknown.") String interested,
             @Schema(description = "Salary estimate e.g. '$130k-160k'. Null if unknown.") String salaryEst,
-            @Schema(description = "Remote: Yes, No, or null if unknown.") String remote,
+            @Schema(description = "Remote: Yes, No, or Yes if unknown.") String remote,
             @Schema(description = "Date applied MM/dd/yyyy. Defaults to today if null.") String dateApplied,
             @Schema(description = "Any notes. Null if none.") String notes
     ) {
@@ -43,6 +43,11 @@ public class JobTrackerTool {
             // Normalize inputs for database matching
             boolean isRemoteField = "Yes".equalsIgnoreCase(remote);
             String normalizedStatus = normalizeStatus(status);
+
+            if ((role == null || role.isBlank()) && company != null && !company.isBlank() && "rejected".equalsIgnoreCase(status)) {
+                System.out.println("Role is missing or blank, grabbing latest company role inserted.");
+                role = databaseService.fetchRoleByCompany(company);
+            }
 
             // Construct the payload DTO
             JobApplicationDto dto = new JobApplicationDto(

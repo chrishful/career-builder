@@ -189,7 +189,7 @@ export default function Dashboard() {
                       <th className={styles.th} style={{ width: '25%' }}>Company</th>
                       <th className={styles.th} style={{ width: '35%' }}>Role</th>
                       <th className={styles.th} style={{ width: '15%' }}>Status</th>
-                      <th className={styles.th} style={{ width: '15%' }}>Applied</th>
+                      <th className={styles.th} style={{ width: '15%' }}>Last Updated</th>
                       <th className={styles.th} style={{ width: '10%' }}>Notes</th>
                     </tr>
                   </thead>

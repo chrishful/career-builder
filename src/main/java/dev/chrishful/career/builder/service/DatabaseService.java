@@ -157,4 +157,11 @@ public class DatabaseService {
                 })
                 .single();
     }
+    public String fetchRoleByCompany(String company) {
+        return jdbcClient.sql("SELECT role FROM applications WHERE company = :company ORDER BY last_updated DESC LIMIT 1")
+                .param("company", company)
+                .query(String.class)
+                .optional()
+                .orElseThrow(() -> new IllegalStateException("No existing application found for company: " + company));
+    }
 }
