@@ -199,12 +199,14 @@
 /* ─── Status Badges ─────────────────────────────────────────────────────────── */
 
 .statusBadge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
+  display: flex;
+  padding: .5rem;
+  border-radius: .5rem;
   font-size: 11px;
   font-weight: 600;
   text-align: center;
+  align-items: center;
+  justify-content:center;
   text-transform: lowercase;
 }
 
@@ -474,7 +476,6 @@
   -webkit-appearance: none;
   border: none;
   cursor: pointer;
-  padding-right: 20px;
 }
 
 /* ─── Chat Messages ─────────────────────────────────────────────────────────── */

@@ -18,6 +18,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [chatOpen, setChatOpen] = useState(false);
+  const STATUS_ORDER = { 'Interview': 0, 'Applied': 1, 'Rejected': 2 };
+
 
   const filteredApplications = activeFilter === 'all'
     ? applications
@@ -124,7 +126,10 @@ export default function Dashboard() {
         if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
 
         const data = await res.json();
-        setApplications(data);
+        const sorted = [...data].sort((a, b) =>
+          (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99)
+        );
+        setApplications(sorted);
       } catch (err) {
         console.error('Data pull metrics crash:', err);
       } finally {
@@ -133,7 +138,7 @@ export default function Dashboard() {
     };
 
     loadInitialData();
-  }, []);
+  });
 
   const totalApplied = applications.length;
   const activeCount = applications.filter(app => app.status && ['applied', 'interview'].includes(app.status.toLowerCase())).length;
