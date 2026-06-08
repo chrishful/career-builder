@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ApplicationRow from './ApplicationRow';
 import MetricCard from './MetricCard';
 import ChatSidebar from './ChatSidebar';
+// import ApplicationFunnel from './ApplicationFunnel';
 import { getSessionToken } from '../supabaseClient';
 import styles from '../style/styles.module.css';
 import { createClient } from '@supabase/supabase-js';
@@ -178,7 +179,7 @@ export default function Dashboard() {
                 ))}
               </div>
             </div>
-
+{/*             <ApplicationFunnel applications={applications} /> */}
             {loading ? (
               <div className={styles.stateMessage}>Loading application pipeline data...</div>
             ) : filteredApplications.length === 0 ? (
