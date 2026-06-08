@@ -1,6 +1,3 @@
-Certainly. Here is the updated `README.md` formatted in Markdown, ready to copy and paste directly into your repository.
-
----
 
 # Career Builder
 
