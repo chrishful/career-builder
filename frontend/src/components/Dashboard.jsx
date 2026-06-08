@@ -11,6 +11,9 @@ const supabase = createClient(
   process.env.REACT_APP_SUPABASE_ANON_KEY
 );
 
+ const STATUS_ORDER = { 'Interview': 0, 'Applied': 1, 'Rejected': 2 };
+
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8080';
 
 export default function Dashboard() {
@@ -18,7 +21,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [chatOpen, setChatOpen] = useState(false);
-  const STATUS_ORDER = { 'Interview': 0, 'Applied': 1, 'Rejected': 2 };
 
 
   const filteredApplications = activeFilter === 'all'
@@ -138,7 +140,7 @@ export default function Dashboard() {
     };
 
     loadInitialData();
-  });
+  }, []);
 
   const totalApplied = applications.length;
   const activeCount = applications.filter(app => app.status && ['applied', 'interview'].includes(app.status.toLowerCase())).length;
