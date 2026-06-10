@@ -94,6 +94,7 @@ public class DecisionAgentConfig {
                             jobStatusTool.rejectionCountTool(),
                             jobStatusTool.stalledApplicationsTool()
                     )
+                    .subAgents(emailExtractionAgent)
                     .build();
         }
 }

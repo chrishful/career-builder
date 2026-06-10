@@ -26,7 +26,7 @@ public class EmailExtractionAgentConfig {
                     - dateProcessed: Today's date in ISO 8601 format (YYYY-MM-DD)
                     - salaryExpectations: Any mentioned salary, compensation range, or pay. Null if not mentioned.
                     - role: The job title or position being discussed
-                    - remote: true if the role is remote or hybrid, false if on-site only, null if not mentioned
+                    - remote: true if the role is remote or hybrid, false if on-site only, true if not mentioned
                     - emailType: Either "recruitment" if this is an outreach or job opportunity, or "rejection" if this is a rejection or pass
         
                     Rules:
