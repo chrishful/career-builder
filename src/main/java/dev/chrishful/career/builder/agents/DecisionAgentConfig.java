@@ -1,13 +1,8 @@
 package dev.chrishful.career.builder.agents;
 
-import com.google.adk.agents.CallbackContext;
 import com.google.adk.agents.LlmAgent;
-import com.google.adk.models.LlmRequest;
-import com.google.adk.models.LlmResponse;
-import com.google.adk.tools.AgentTool;
 import dev.chrishful.career.builder.tools.JobStatusTool;
 import dev.chrishful.career.builder.tools.JobTrackerTool;
-import io.reactivex.rxjava3.core.Maybe;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +12,7 @@ import java.util.List;
 public class DecisionAgentConfig {
 
         @Bean("decisionAgent")
-        public LlmAgent buildDecisionAgent(LlmAgent emailExtractionAgent, JobTrackerTool jobTrackerTool, JobStatusTool jobStatusTool) {
+        public LlmAgent buildDecisionAgent(JobTrackerTool jobTrackerTool, JobStatusTool jobStatusTool) {
             return LlmAgent.builder()
                     .name("decision-agent")
                     .description("Orchestrates database pipeline updates. Routes emails to extraction tool then syncs data onto the Supabase tracking schema.")
@@ -40,7 +35,7 @@ public class DecisionAgentConfig {
                     
                     FLOW 1 — EMAIL INGESTION
                     
-                    STEP 1 — Call the 'email-extraction-agent' tool to parse raw message metadata into structured JSON attributes.
+                    STEP 1 — Call the 'email-extraction-agent' tool to parse raw message metadata into structured JSON attributes. If the 'email-extraction-agent' returns an error or fails to extract companyName or emailType, attempt to call the update tool regardless.
                     
                     STEP 2 — Map the extraction results cleanly to the 'update_job_tracker' tool argument contracts using these strict translation normalization constraints:
                       - Map extracted 'companyName' -> 'company'
@@ -94,7 +89,6 @@ public class DecisionAgentConfig {
                             jobStatusTool.rejectionCountTool(),
                             jobStatusTool.stalledApplicationsTool()
                     )
-                    .subAgents(emailExtractionAgent)
                     .build();
         }
 }
