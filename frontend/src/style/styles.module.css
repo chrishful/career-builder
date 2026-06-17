@@ -673,3 +673,17 @@
     width:100%;
     padding:5px;
 }
+.searchInput {
+  height: 34px;
+  padding: 0 10px;
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-tertiary);
+}

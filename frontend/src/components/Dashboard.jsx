@@ -22,11 +22,20 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState('all');
   const [chatOpen, setChatOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
 
-  const filteredApplications = activeFilter === 'all'
-    ? applications
-    : applications.filter(app => app.status?.toLowerCase() === activeFilter.toLowerCase());
+
+    const filteredApplications = applications
+      .filter(app => activeFilter === 'all' || app.status?.toLowerCase() === activeFilter.toLowerCase())
+      .filter(app => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          app.company?.toLowerCase().includes(q) ||
+          app.role?.toLowerCase().includes(q)
+        );
+      });
 
 
   useEffect(() => {
@@ -166,6 +175,13 @@ export default function Dashboard() {
 
           <div className={styles.tableContainer}>
             <div className={styles.tableHeaderActions}>
+                <input
+                  type="text"
+                  placeholder="Search company or role…"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className={styles.searchInput}
+                />
               <div className={styles.tableTitle}>Applications</div>
               <div className={styles.filterGroup}>
                 {['all', 'applied', 'interview', 'rejected'].map(filter => (
